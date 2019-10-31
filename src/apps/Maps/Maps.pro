@@ -122,8 +122,6 @@ FORMS    += mainwindow.ui \
 RESOURCES += \
     icons.qrc
 
-QMAKE_MAC_SDK = macosx10.12
-
 unix:!macx: LIBS += -ldl
 
 win32: RC_ICONS = CT_Arrow-RGB.ico

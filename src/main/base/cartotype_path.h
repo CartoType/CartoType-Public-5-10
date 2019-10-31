@@ -282,6 +282,9 @@ class TContour: public MPath
 class CContour: public MPath, public MWritableContour
     {
     public:
+    CContour() = default;
+    explicit CContour(const TContour& aContour): iClosed(aContour.Closed()) { AppendPoints(aContour.Point(),aContour.Points()); }
+
     // Virtual functions from MPath.
     size_t Contours() const override { return 1; }
     void GetContour(size_t /*aIndex*/,TContour& aContour) const override { aContour = *this; }

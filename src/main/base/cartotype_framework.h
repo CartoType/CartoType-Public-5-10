@@ -76,6 +76,11 @@ class CMapRendererImplementation;
 class CAsyncFinder;
 class CAsyncRouter;
 
+namespace Router
+    {
+    class TRoutePointInternal;
+    }
+
 using CMapDataBaseArray = std::vector<std::unique_ptr<CMapDataBase>>;
 
 /** A type for functions called by the asynchronous Find function. */
@@ -671,6 +676,7 @@ class CFramework: public MNavigatorObserver
     std::unique_ptr<CRoute> CreateBestRoute(TResult& aError,const TRouteProfile& aProfile,const TCoordSet& aCoordSet,TCoordType aCoordType,bool aStartFixed,bool aEndFixed,size_t aIterations);
     std::unique_ptr<CRoute> CreateRouteFromXml(TResult& aError,const TRouteProfile& aProfile,const CString& aFileNameOrData);
     std::unique_ptr<CRoute> CreateRouteHelper(TResult& aError,bool aBest,const TRouteProfile& aProfile,const TRouteCoordSet& aCoordSet,bool aStartFixed,bool aEndFixed,size_t aIterations);
+    std::unique_ptr<CRoute> CreateRouteHelper(TResult& aError,bool aBest,const TRouteProfile& aProfile,const std::vector<Router::TRoutePointInternal>& aRoutePointArray,bool aStartFixed,bool aEndFixed,size_t aIterations);
     TResult CreateRouteAsync(RouterAsyncCallBack aCallback,const TRouteProfile& aProfile,const TRouteCoordSet& aCoordSet,bool aOverride = false);
     TResult CreateBestRouteAsync(RouterAsyncCallBack aCallback,const TRouteProfile& aProfile,const TRouteCoordSet& aCoordSet,bool aStartFixed,bool aEndFixed,size_t aIterations,bool aOverride = false);
     TResult CreateRouteAsyncHelper(RouterAsyncCallBack aCallback,bool aBest,const TRouteProfile& aProfile,const TRouteCoordSet& aCoordSet,bool aStartFixed,bool aEndFixed,size_t aIterations,bool aOverride = false);
@@ -746,7 +752,7 @@ class CFramework: public MNavigatorObserver
     // functions for internal use only
     TResult CompileStyleSheet(std::shared_ptr<CMapStyle>& aStyleSheet,double aScale);
     std::unique_ptr<CMapStore> NewMapStore(const CMapStyle& aStyleSheet,const TRect& aBounds,bool aUseFastAllocator);
-    const CMapDataBase& MainDb() const { return iMapDataSet->MainDb(); }
+    CMapDataBase& MainDb() const { return iMapDataSet->MainDb(); }
     TTransform3FP MapTransform() const;
     TTransformFP MapTransform2D() const;
     TTransform3FP PerspectiveTransform() const;
@@ -782,7 +788,6 @@ class CFramework: public MNavigatorObserver
     void HandleChangedLayer() { InvalidateMapBitmaps(); LayerChanged(); }
     TResult CreateTileServer(int32_t aTileWidthInPixels,int32_t aTileHeightInPixels);
     TResult SetRoutePositionAndVector(const TPoint& aPos,const TPoint& aVector);
-    TResult ConvertCoordSetToMapCoords(TRouteCoordSet& aRouteCoordSet);
     TResult CreateNavigator();
     void SetCameraParam(TCameraParam& aCameraParam,double aViewWidth,double aViewHeight);
     TResult InsertMapObject(uint32_t aMapHandle,TMapObjectType aType,const CString& aLayerName,const MPath& aGeometry,

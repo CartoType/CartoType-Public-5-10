@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool
     {
         // Create the CartoType framework
         let bounds = UIScreen.main.bounds;
@@ -21,19 +21,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let scale = UIScreen.main.scale
         let width = bounds.width * scale
         let height = bounds.height * scale
-        let param = CartoTypeFrameworkParam()
+        let param = CartoTypeFrameworkParam()!
         param.mapFileName = "santa-cruz"
         param.styleSheetFileName = "standard"
         param.fontFileName = "DejaVuSans"
         param.viewWidth = Int32(width)
         param.viewHeight = Int32(height)
-        let framework = CartoTypeFramework.init(param: param)
+        let framework = CartoTypeFramework.init(param: param)!
         
         // Uncomment the following line to create walking routes, not driving routes.
         // framework?.setMainProfileType(WalkingProfile)
         
         // Add a scale bar.
-        framework?.setScaleBar(false,width: 1.75,unit: "in",position: NoticePositionBottomLeft)
+        framework.setScaleBar(false,width: 1.75,unit: "in",position: NoticePositionBottomLeft)
 
         // Create the view controller.
         let view_controller = ViewController.init(aFrameWork: framework, aBounds:bounds)

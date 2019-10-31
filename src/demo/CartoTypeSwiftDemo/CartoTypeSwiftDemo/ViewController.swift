@@ -59,10 +59,10 @@ class ViewController: CartoTypeViewController, UISearchBarDelegate, CLLocationMa
         m_navigate_button = UIButton.init()
         m_navigate_button.frame = CGRect(x: 0, y: 0, width: 50, height: 25)
         m_navigate_button.layer.position = CGPoint(x:view.bounds.size.width / 2,y:view.bounds.size.height - 30)
-        m_navigate_button.setTitleColor(UIColor.red, for: UIControlState.normal)
+        m_navigate_button.setTitleColor(UIColor.red, for: UIControl.State.normal)
         m_navigate_button.backgroundColor = UIColor.white
-        m_navigate_button.setTitle("Start", for: UIControlState.normal)
-        m_navigate_button.addTarget(self, action: #selector(startOrEndNavigation), for: UIControlEvents.touchUpInside)
+        m_navigate_button.setTitle("Start", for: UIControl.State.normal)
+        m_navigate_button.addTarget(self, action: #selector(startOrEndNavigation), for: UIControl.Event.touchUpInside)
         m_navigate_button.isHidden = true
         view.addSubview(m_navigate_button!)
 
@@ -144,7 +144,7 @@ class ViewController: CartoTypeViewController, UISearchBarDelegate, CLLocationMa
     
     override var canBecomeFirstResponder: Bool { return true }
     
-    func setRouteStart()
+    @objc func setRouteStart()
         {
         m_route_start_in_degrees = m_last_point_pressed_in_degrees
         if (m_route_end_in_degrees.x != 0 && m_route_end_in_degrees.y != 0)
@@ -154,7 +154,7 @@ class ViewController: CartoTypeViewController, UISearchBarDelegate, CLLocationMa
             }
         }
     
-    func setRouteEnd()
+    @objc func setRouteEnd()
         {
         m_route_end_in_degrees = m_last_point_pressed_in_degrees
         if (m_route_end_in_degrees.x != 0 && m_route_end_in_degrees.y != 0)
@@ -164,7 +164,7 @@ class ViewController: CartoTypeViewController, UISearchBarDelegate, CLLocationMa
         m_navigate_button.isHidden = false
         }
     
-    func insertPushPin()
+    @objc func insertPushPin()
         {
         let a : CartoTypeAddress = CartoTypeAddress.init()
         m_framework.getAddress(a, point: m_last_point_pressed_in_degrees, coordType: DegreeCoordType)
@@ -176,13 +176,13 @@ class ViewController: CartoTypeViewController, UISearchBarDelegate, CLLocationMa
         m_pushpin_id = p.objectId
         }
     
-    func deletePushPin()
+    @objc func deletePushPin()
         {
         m_framework.deleteObjects(fromMap: 0, fromID: m_pushpin_id, toID: m_pushpin_id, withCondition: nil, andCount: nil)
         m_pushpin_id = 0
         }
     
-    func startOrEndNavigation()
+    @objc func startOrEndNavigation()
         {
         if (!m_navigating)
             {
@@ -202,7 +202,7 @@ class ViewController: CartoTypeViewController, UISearchBarDelegate, CLLocationMa
             
             if (m_framework.getRouteCount() != 0)
                 {
-                m_navigate_button.setTitle("End", for: UIControlState.normal)
+                m_navigate_button.setTitle("End", for: UIControl.State.normal)
                 m_search_bar.isHidden = true
                 m_navigating = true
                 }
@@ -210,7 +210,7 @@ class ViewController: CartoTypeViewController, UISearchBarDelegate, CLLocationMa
             }
         else
             {
-            m_navigate_button.setTitle("Start", for: UIControlState.normal)
+            m_navigate_button.setTitle("Start", for: UIControl.State.normal)
             m_search_bar.isHidden = false
             m_navigating = false
             m_route_start_in_degrees.x = 0; m_route_start_in_degrees.y = 0
@@ -256,7 +256,7 @@ class ViewController: CartoTypeViewController, UISearchBarDelegate, CLLocationMa
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error)
         {
-        let alert_controller = UIAlertController.init(title: "Error", message: "could not get your location", preferredStyle: UIAlertControllerStyle.alert)
+        let alert_controller = UIAlertController.init(title: "Error", message: "could not get your location", preferredStyle: UIAlertController.Style.alert)
         present(alert_controller, animated: true, completion: nil)
         }
     
