@@ -93,6 +93,7 @@ class MainWindow: public QMainWindow
     void on_actionReverse_Route_triggered();
     void on_actionPrint_triggered();
     void on_actionPrint_Preview_triggered();
+    void on_actionNight_Mode_triggered(bool aChecked);
 
     /*
     These are manually connected slots. I don't use the "on_" naming convention because
@@ -102,6 +103,7 @@ class MainWindow: public QMainWindow
     */
     void OpenRecentFileTriggered();
     void FinishEditingCustomStyleSheet(int aResult);
+
 
     private:
     static const int KMaxRecentFiles = 8;

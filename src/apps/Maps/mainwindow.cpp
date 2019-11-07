@@ -426,6 +426,7 @@ void MainWindow::EnableMenuItems()
         m_ui->actionPerspective_View->setChecked(m_map_form->Perspective());
         m_ui->action3D_Buildings->setChecked(m_map_form->Draw3DBuildings());
         m_ui->actionMetric_Units->setChecked(m_map_form->MetricUnits());
+        m_ui->actionNight_Mode->setChecked(m_map_form->NightMode());
         m_ui->actionGraphics_Acceleration->setChecked(m_map_form->GraphicsAcceleration());
         m_ui->actionTurn_expanded_router->setChecked(m_map_form->PreferredRouterType() == CartoType::TRouterType::TurnExpandedAStar);
         UpdateSaveAddedData();
@@ -935,4 +936,10 @@ void MainWindow::on_actionPrint_Preview_triggered()
     {
     if (m_map_form)
         m_map_form->Print(true);
+    }
+
+void MainWindow::on_actionNight_Mode_triggered(bool aChecked)
+    {
+    if (m_map_form)
+        m_map_form->SetNightMode(aChecked);
     }

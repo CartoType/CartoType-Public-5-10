@@ -37,7 +37,7 @@ class CLegend: public MNavigatorObserver
     CLegend(const CLegend& aOther);
     CLegend& operator=(const CLegend& aOther);
     
-    std::unique_ptr<CBitmap> CreateLegend(double aWidth,const char* aUnit,double aScaleDenominator,double aScaleDenominatorInView);
+    std::unique_ptr<CBitmap> CreateLegend(double aWidth,const char* aUnit,double aScaleDenominator,double aScaleDenominatorInView,TColor aNightModeColor = KTransparentBlack);
     void Clear();
     int32_t Pixels(double aDimension,const char* aUnit);
 

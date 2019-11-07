@@ -456,7 +456,7 @@ class CFramework: public MNavigatorObserver
     TResult SetStyleSheet(const CString& aStyleSheetFileName,size_t aIndex = 0);
     TResult SetStyleSheet(const uint8_t* aData,size_t aLength,size_t aIndex = 0);
     TResult SetStyleSheet(const CStyleSheetData& aStyleSheetData,size_t aIndex = 0);
-    TResult SetStyleSheet(const CStyleSheetDataArray& aStyleSheetDataArray,const CVariableDictionary* aStyleSheetVariables = nullptr);
+    TResult SetStyleSheet(const CStyleSheetDataArray& aStyleSheetDataArray,const CVariableDictionary* aStyleSheetVariables = nullptr,bool aNightMode = false,TColor aNightModeColor = KTransparentBlack);
     TResult ReloadStyleSheet(size_t aIndex = 0);
     void AppendStyleSheet(const CString& aStyleSheetFileName);
     void AppendStyleSheet(const uint8_t* aData,size_t aLength);
@@ -465,6 +465,10 @@ class CFramework: public MNavigatorObserver
     CStyleSheetData GetStyleSheetData(size_t aIndex) const;
     const CStyleSheetDataArray& GetStyleSheetDataArray() const;
     const CVariableDictionary& GetStyleSheetVariables() const;
+    bool SetNightMode(bool aSet);
+    TColor SetNightModeColor(TColor aColor);
+    bool NightMode() const;
+    TColor NightModeColor() const;
 
     void Resize(int32_t aViewWidth,int32_t aViewHeight);
     void SetResolutionDpi(double aDpi);
@@ -509,6 +513,8 @@ class CFramework: public MNavigatorObserver
     TResult GetMapExtent(TRectFP& aMapExtent,TCoordType aCoordType) const;
     CString GetProjectionAsProj4Param() const; 
     TViewState ViewState() const;
+    TResult SetViewLimits(double aMinScaleDenominator,double aMaxScaleDenominator,const CGeometry& aGeometry);
+    void SetViewLimits(double aMinScaleDenominator = 0,double aMaxScaleDenominator = 0);
     
     TResult InsertMapObject(uint32_t aMapHandle,TMapObjectType aType,const CString& aLayerName,const CGeometry& aGeometry,
                             const CString& aStringAttributes,int32_t aIntAttribute,uint64_t& aId,bool aReplace);
@@ -608,6 +614,7 @@ class CFramework: public MNavigatorObserver
     TResult FindPointsInPath(CMapObjectArray& aObjectArray,const CGeometry& aPath,const TFindParam* aParam = nullptr) const;
     TResult FindAsync(FindAsyncCallBack aCallBack,const TFindParam& aFindParam,bool aOverride = false);
     TResult FindAsync(FindAsyncGroupCallBack aCallBack,const TFindParam& aFindParam,bool aOverride = false);
+    TResult FindAddressAsync(FindAsyncCallBack aCallBack,size_t aMaxObjectCount,const CAddress& aAddress,bool aFuzzy = false,bool aOverride = false);
 
     // geocoding
     TResult GeoCodeSummary(CString& aSummary,const CMapObject& aMapObject) const;
@@ -784,7 +791,7 @@ class CFramework: public MNavigatorObserver
     TResult Construct(const TParam& aParam);
     void HandleChangedMapData();
     void InvalidateMapBitmaps() { iMapBitmapType = TMapBitmapType::None; iWebMapServiceBitmap = nullptr; }
-    void HandleChangedView() { InvalidateMapBitmaps(); ViewChanged(); }
+    void HandleChangedView();
     void HandleChangedLayer() { InvalidateMapBitmaps(); LayerChanged(); }
     TResult CreateTileServer(int32_t aTileWidthInPixels,int32_t aTileHeightInPixels);
     TResult SetRoutePositionAndVector(const TPoint& aPos,const TPoint& aVector);
@@ -794,6 +801,7 @@ class CFramework: public MNavigatorObserver
                             const CString& aStringAttributes,int32_t aIntAttribute,uint64_t& aId,bool aReplace);
     TResult InsertTrackObject();
     void CreateMapObjectGroupArray(CMapObjectGroupArray& aObjectGroupArray,CMapObjectArray& aObjectArray,const TFindParam& aFindParam) const;
+    void EnforcePanAndZoomLimits();
 
     // Notifying the framework observer.
     void ViewChanged() { auto p = iFrameworkObserver.lock(); if (p) p->OnViewChange(); }
@@ -867,6 +875,7 @@ class CFramework: public MNavigatorObserver
     bool iMapsOverlap = true;
     std::unique_ptr<CAsyncFinder> iAsyncFinder;
     std::unique_ptr<CAsyncRouter> iAsyncRouter;
+    CGeometry iPanArea;
     std::shared_ptr<MUserData> iUserData;
     };
 

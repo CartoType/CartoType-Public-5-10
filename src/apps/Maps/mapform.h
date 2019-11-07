@@ -80,6 +80,8 @@ class MapForm: public QOpenGLWidget
     void ChooseLayers();
     void SetMetricUnits(bool aEnable);
     bool MetricUnits() const { return m_metric_units; }
+    void SetNightMode(bool aSet);
+    bool NightMode() const;
     void SetGraphicsAcceleration(bool aEnable);
     bool GraphicsAcceleration() const { return m_graphics_acceleration; }
     void SetPerspective(bool aEnable);

@@ -1051,6 +1051,12 @@ class TPointInPolygonHelper
     bool m_inside = false;
     };
 
+/** The minimal legal map scale deniminator. */
+constexpr double KMinScaleDenominator = 100;
+
+/** The maximum legal map scale denominator. */
+constexpr double KMaxScaleDenominator = 1000000000;
+
 } // namespace CartoType
 
 #ifdef _WIN32_WCE

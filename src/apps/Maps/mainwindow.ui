@@ -67,6 +67,7 @@
     <addaction name="actionMetric_Units"/>
     <addaction name="actionGraphics_Acceleration"/>
     <addaction name="action3D_Buildings"/>
+    <addaction name="actionNight_Mode"/>
    </widget>
    <widget class="QMenu" name="menuFind">
     <property name="title">
@@ -140,6 +141,9 @@
   </action>
   <action name="actionScale">
    <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
     <bool>true</bool>
    </property>
    <property name="text">
@@ -451,6 +455,17 @@
    </property>
    <property name="text">
     <string>3D Buildings</string>
+   </property>
+  </action>
+  <action name="actionNight_Mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Night Mode</string>
    </property>
   </action>
  </widget>

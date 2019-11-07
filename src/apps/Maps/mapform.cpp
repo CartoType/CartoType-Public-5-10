@@ -78,6 +78,9 @@ MapForm::MapForm(QWidget* aParent,MainWindow& aMainWindow,const QString& aMapFil
         return;
         }
 
+    // Prevent panning beyond the map extent, and zooming in further than 1:1000.
+    m_framework->SetViewLimits(1000,0);
+
     // Set the window title to that of the data set.
     QString qname;
     SetString(qname,m_framework->DataSetName());
@@ -406,7 +409,8 @@ std::unique_ptr<CartoType::CBitmap> MapForm::LegendBitmap()
         m_legend->SetBackgroundColor(b);
         }
 
-    return m_legend->CreateLegend(1,"in",CartoType::Arithmetic::Max((int)m_framework->ScaleDenominator(),8000),m_framework->GetScaleDenominatorInView());
+    return m_legend->CreateLegend(1,"in",CartoType::Arithmetic::Max((int)m_framework->ScaleDenominator(),8000),m_framework->GetScaleDenominatorInView(),
+                                  m_framework->NightMode() ? m_framework->NightModeColor() : 0);
     }
 
 void MapForm::EnableDrawLegend(bool aEnable)
@@ -1403,6 +1407,18 @@ void MapForm::SetMetricUnits(bool aEnable)
         }
     }
 
+void MapForm::SetNightMode(bool aSet)
+    {
+    m_framework->SetNightMode(aSet);
+    m_legend.reset();
+    update();
+    }
+
+bool MapForm::NightMode() const
+    {
+    return m_framework->NightMode();
+    }
+
 void MapForm::SetGraphicsAcceleration(bool aEnable)
     {
     if (aEnable != m_graphics_acceleration)
@@ -1562,7 +1578,8 @@ void MapForm::Print(bool aPreview)
         CartoType::TColor b(CartoType::KWhite);
         b.SetAlpha(200);
         legend.SetBackgroundColor(b);
-        auto legend_bitmap = legend.CreateLegend(2,"in",CartoType::Arithmetic::Max((int)print_framework->ScaleDenominator(),8000),print_framework->GetScaleDenominatorInView());
+        auto legend_bitmap = legend.CreateLegend(2,"in",CartoType::Arithmetic::Max((int)print_framework->ScaleDenominator(),8000),print_framework->GetScaleDenominatorInView(),
+                                                 m_framework->NightMode() ? m_framework->NightModeColor() : 0);
         auto& gc = print_framework->GetMapGraphicsContext();
         gc.DrawBitmap(*legend_bitmap,CartoType::TPoint(aPageRect.width() - legend_bitmap->Width() - 16,aPageRect.height() - legend_bitmap->Height() - 16));
 

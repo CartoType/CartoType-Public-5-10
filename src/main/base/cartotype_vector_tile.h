@@ -418,12 +418,14 @@ class TStyleSheetData
     public:
     CStyleSheetDataArray m_style_sheet_data_array;
     CVariableDictionary m_style_sheet_variables;
+    bool m_night_mode = false;
+    TColor m_night_mode_color = KTransparentBlack;
     };
 
 class TThreadSafeStyleSheetData: private TStyleSheetData
     {
     public:
-    void Set(CFramework& aFramework);
+    void Set(const CFramework& aFramework);
     void Get(TStyleSheetData& aStyleSheetData);
 
     private:
@@ -485,7 +487,7 @@ class CVectorTileHelper
     It can be used to set any parameters affecting the whole frame, like the viewport size in pixels.
     It also supplies any background tiles to be drawn as placeholders for tiles that could not be loaded.
     */
-    virtual void OnStartDrawing(const TMapState& /*aMapState*/,const std::vector<TRectFP>& /*aBackgroundRectArray*/) { }
+    virtual void OnStartDrawing(const TMapState& /*aMapState*/,const std::vector<TRectFP>& /*aBackgroundRectArray*/,TColor /*aBackgroundColor*/,TColor /*aNightModeColor*/) { }
 
     /**
     This function is called once per frame. It allows the data in a frame to be drawn
@@ -575,6 +577,8 @@ class CVectorTileServer: public MFrameworkObserver
     std::vector<std::shared_ptr<CMapStyle>> m_style_array;
     std::vector<std::shared_ptr<std::vector<bool>>> m_enabled_layer_array;
     std::mutex m_style_array_mutex;
+    std::atomic<uint32_t> m_background_color;
+    std::atomic<uint32_t> m_night_mode_color;
     TRectFP m_level_0_tile_extent;
     double m_level_0_tile_width_in_metres;
     double m_pixel_size_in_metres;

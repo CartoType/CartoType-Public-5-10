@@ -165,10 +165,10 @@ BOOL CCartoTypeDemoDoc::OnOpenDocument(LPCTSTR lpszPathName)
 #endif
 
         std::string key("password");
-        iMapDataSet = std::unique_ptr<CartoType::CFrameworkMapDataSet>(CartoType::CFrameworkMapDataSet::New(error,*app->Engine(),filename,&key,false));
+        iMapDataSet = std::unique_ptr<CartoType::CFrameworkMapDataSet>(CartoType::CFrameworkMapDataSet::New(error,*app->Engine(),filename,&key));
         }
     else
-        iMapDataSet = std::unique_ptr<CartoType::CFrameworkMapDataSet>(CartoType::CFrameworkMapDataSet::New(error,*app->Engine(),filename,nullptr,false));
+        iMapDataSet = std::unique_ptr<CartoType::CFrameworkMapDataSet>(CartoType::CFrameworkMapDataSet::New(error,*app->Engine(),filename));
 
     if (error)
         {

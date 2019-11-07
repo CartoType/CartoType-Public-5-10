@@ -449,19 +449,8 @@ void CCartoTypeDemoView::CalculateAndDisplayRoute()
             error = iFramework->UseRoute(*r,true);
         }
     else
-        {
         error = iFramework->StartNavigation(cs);
 
-        auto callback = [this](CartoType::TResult aError,std::unique_ptr<CartoType::CRoute> aRoute)
-            {
-            iRoute = std::move(aRoute);
-
-            //PostMessage()
-            };
-
-        // Test
-        error = iFramework->CreateRouteAsync(callback,CartoType::TRouteProfile(),cs);
-        }
     if (error)
         {
         CCartoTypeDemoApp* app = (CCartoTypeDemoApp*)AfxGetApp();

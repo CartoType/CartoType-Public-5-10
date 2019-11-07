@@ -54,7 +54,7 @@ enum class TLineJoin
     Round,
     /** Extend line borders till they intersect. */
     Bevel,
-    /** The same as ELineJoinBevel, but if long spikes are produced they are cut off. */
+    /** The same as Bevel, but if long spikes are produced they are cut off. */
     Miter
     };
 
@@ -122,6 +122,9 @@ class CPaintServer
     /** Return the texture: a bitmap which is the smallest possible repeating element. Return null if that is not possible. */
     virtual std::shared_ptr<CBitmap> Texture() = 0;
 
+    /** Blend the colors with aColor in the specified proportion, preserving the transparency. */
+    virtual void Blend(TColor aColor,int32_t aAlpha) = 0;
+
     /** Return a pointer to a 256-element color ramp if there is one. */
     virtual const TColor* Ramp() const { return nullptr; }
 
@@ -148,6 +151,7 @@ class CPattern: public CPaintServer
         }
     TColor Color(int32_t aX,int32_t aY) override;
     std::shared_ptr<CBitmap> Texture() override;
+    void Blend(TColor,int32_t) override { }
 
     private:
     const TBitmap& iBitmap;
@@ -1034,6 +1038,22 @@ class COwnBitmapTexture: public CTexture
     private:
     CBitmap* iBitmap;
     };
+
+inline void SetNight(TColor& aColor,const TColor& aNightColor,int aAlpha,bool aIsRoad)
+    {
+    if (aColor.IsNull())
+        return;
+    TColor c = aNightColor;
+    c.SetAlpha(aColor.Alpha());
+    if (aIsRoad)
+        c.Blend(KWhite,128);
+    aColor.Blend(c,aAlpha);
+    }
+
+inline void SetNight(TPaint& aPaint,const TColor& aNightColor,int aAlpha,bool aIsRoad)
+    {
+    SetNight(aPaint.iColor,aNightColor,aAlpha,aIsRoad);
+    }
 
 } // namespace CartoType
 
