@@ -122,8 +122,8 @@ class CPaintServer
     /** Return the texture: a bitmap which is the smallest possible repeating element. Return null if that is not possible. */
     virtual std::shared_ptr<CBitmap> Texture() = 0;
 
-    /** Blend the colors with aColor in the specified proportion, preserving the transparency. */
-    virtual void Blend(TColor aColor,int32_t aAlpha) = 0;
+    /** Convert the colors to night mode using the specified color. */
+    virtual void SetNightMode(TColor aNightModeColor) = 0;
 
     /** Return a pointer to a 256-element color ramp if there is one. */
     virtual const TColor* Ramp() const { return nullptr; }
@@ -151,7 +151,7 @@ class CPattern: public CPaintServer
         }
     TColor Color(int32_t aX,int32_t aY) override;
     std::shared_ptr<CBitmap> Texture() override;
-    void Blend(TColor,int32_t) override { }
+    void SetNightMode(TColor) override { }
 
     private:
     const TBitmap& iBitmap;
@@ -180,6 +180,12 @@ class TPaint
     defined as having a null paint server and a completely transparent color.
     */
     bool IsNull() const { return !iPaintServer && !(iColor.iValue & 0xFF000000); }
+    
+    /** Convert the color to a night-mode color. */
+    void SetNightMode(const TColor& aNightColor,bool aIsRoad)
+        {
+        iColor.SetNightMode(aNightColor,aIsRoad);
+        }
 
     /** The paint color. */
     TColor iColor;
@@ -1038,22 +1044,6 @@ class COwnBitmapTexture: public CTexture
     private:
     CBitmap* iBitmap;
     };
-
-inline void SetNight(TColor& aColor,const TColor& aNightColor,int aAlpha,bool aIsRoad)
-    {
-    if (aColor.IsNull())
-        return;
-    TColor c = aNightColor;
-    c.SetAlpha(aColor.Alpha());
-    if (aIsRoad)
-        c.Blend(KWhite,128);
-    aColor.Blend(c,aAlpha);
-    }
-
-inline void SetNight(TPaint& aPaint,const TColor& aNightColor,int aAlpha,bool aIsRoad)
-    {
-    SetNight(aPaint.iColor,aNightColor,aAlpha,aIsRoad);
-    }
 
 } // namespace CartoType
 

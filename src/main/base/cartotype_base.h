@@ -1051,7 +1051,7 @@ class TPointInPolygonHelper
     bool m_inside = false;
     };
 
-/** The minimal legal map scale deniminator. */
+/** The minimum legal map scale denominator. */
 constexpr double KMinScaleDenominator = 100;
 
 /** The maximum legal map scale denominator. */

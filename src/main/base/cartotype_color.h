@@ -107,6 +107,7 @@ class TColor
     void PremultiplyAlpha();
     void Blend(const TColor& aOtherColor,int32_t aOtherColorAlpha);
     size_t Set(const MString& aColor);
+    void SetNightMode(TColor aNightColor,bool aIsRoad);
 
     /**
     The color value, containing, starting with the least significant byte, red, green, blue and alpha levels,
