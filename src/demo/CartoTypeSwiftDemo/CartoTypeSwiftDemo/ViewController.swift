@@ -157,11 +157,11 @@ class ViewController: CartoTypeViewController, UISearchBarDelegate, CLLocationMa
     @objc func setRouteEnd()
         {
         m_route_end_in_degrees = m_last_point_pressed_in_degrees
-        if (m_route_end_in_degrees.x != 0 && m_route_end_in_degrees.y != 0)
+        if (m_route_start_in_degrees.x != 0 && m_route_start_in_degrees.y != 0)
             {
+            m_navigate_button.isHidden = false
             m_framework.startNavigation(from: m_route_start_in_degrees, start: DegreeCoordType, to: m_route_end_in_degrees, end: DegreeCoordType)
             }
-        m_navigate_button.isHidden = false
         }
     
     @objc func insertPushPin()
