@@ -120,7 +120,7 @@ class CMapObject: public MPath
     TMapObjectType Type() const { return iType; }
     
     /** Return the integer attribute. */
-    int32_t IntAttribute() const { return iIntAttribute; }
+    uint32_t IntAttribute() const { return iIntAttribute; }
 
     /** Return the name of the layer this object belongs to. */
     const MString& LayerName() const { return *iLayer; }
@@ -229,7 +229,7 @@ class CMapObject: public MPath
     CRefCountedString iLayer;               // the layer this object belongs to
     uint64_t iId = 0;						// the object's identifier
     TMapObjectType iType;					// the type of the object: point, line, polygon, etc.
-    int32_t iIntAttribute = 0;              // the integer attribute, used by convention for road types, routing flags, or sub-types of layers
+    uint32_t iIntAttribute = 0;             // the integer attribute, used by convention for road types, routing flags, or sub-types of layers
     TUserData iUserData;				    // user data; can hold an integer or a pointer; can be used to associate any value with a map object
     };
 

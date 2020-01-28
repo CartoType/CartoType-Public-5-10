@@ -64,7 +64,7 @@ class CLegend: public MNavigatorObserver
     CString TurnInstruction();
 
     private:
-    void DrawScale(CGraphicsContext& aGc,const CLegendObjectParam& aParam,int32_t aX,int32_t aY,int32_t aWidth);
+    void DrawScale(CGraphicsContext& aGc,const CLegendObjectParam& aParam,int32_t aX,int32_t aY,int32_t aWidth,TColor aNightModeColor);
     void Copy(const CLegend& aOther);
 
     // virtual functions from MNavigatorObserver

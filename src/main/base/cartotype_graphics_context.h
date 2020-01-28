@@ -872,7 +872,7 @@ class CGraphicsContext
     virtual TResult DrawTexture(const CTexture& aTexture,const TPointFP& aTopLeft,const TTransformFP& aTransform);
     virtual TResult DrawStroke(const MPath& aPath,const TTransform* aTransform = nullptr,bool aClip = false);
     virtual void SetGlow(TColor aColor,TFixed aWidth,const TPointFixed& aOffset);
-    virtual void GetGlow(TColor& aColor,TFixed& aWidth,TPoint& aOffset);
+    virtual void GetGlow(TColor& aColor,TFixed& aWidth,TPointFixed& aOffset);
     virtual TResult DrawBitmapMonochrome(const TBitmap& aBitmap,const TPoint& aTopLeft);
 
     TResult DrawShapeAndStroke(const MPath& aPath,const TPaint& aStrokePaint,const TTransform* aTransform = nullptr);
